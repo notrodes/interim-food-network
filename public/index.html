@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html lang="en-us">
 
 <head>
     <title>Foodbank</title>
     <meta charset="utf-8">
     <link href="css/main.css" rel="stylesheet">
+    <script defer src="js/index.js"></script>
 </head>
 
 <body>
@@ -11,9 +13,9 @@
     <main>
         <form action="search" method="GET">
             <label> Zip code:
-            <input type="text" name="zip">
-        </label>
-            <input type="submit" value="Submit">
+                <input id="zip" type="tel" pattern="[0-9]{5}" required name="zip">
+            </label>
+            <input id="submit" type="submit" value="Submit">
         </form>
         <a href="create.html">Create listing</a>
     </main>
