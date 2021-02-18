@@ -8,5 +8,7 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.4"
-rocket_contrib = "0.4"
+rocket_contrib = { version = "0.4", features = ["diesel_sqlite_pool"] }
 sonic-channel = { version = "0.4", features = ["control", "ingest", "search"] }
+# diesel = { version = "1.4.4", features = ["sqlite"] }
+# dotenv = "0.15.0"
