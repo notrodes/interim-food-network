@@ -5,6 +5,7 @@ use rocket::request::Form;
 use rocket::response::NamedFile;
 use rocket_contrib::serve::StaticFiles;
 use std::error::Error;
+use rocket::http::Status;
 // use std::io::Result;
 // use rocket_contrib::databases::{r2d2, DbError, DatabaseConfig, Poolable};
 use sonic_channel::*;
@@ -21,18 +22,23 @@ fn search(zip: u64) -> Result<NamedFile, Box<dyn Error>> {
     Ok(NamedFile::open("public/results.html")?)
 }
 
-// #[derive(FromForm)]
-// struct Task {
-//     complete: bool,
-//     description: String,
-// }
+#[derive(FromForm, Debug)]
+struct Listing {
+    test: String
+}
 
-// #[post("/todo", data = "<task>")]
-// fn new(task: Form<Task>) { /* .. */ }
+
+#[post("/create.html", data = "<listing>")]
+fn create(listing: Form<Listing>) -> Status {
+    println!("{:?}", listing);
+    Status::Ok
+}
+
+
 
 fn main() {
     rocket::ignite()
         .mount("/", StaticFiles::from("public"))
-        .mount("/", routes![search])
+        .mount("/", routes![search, create])
         .launch();
 }
