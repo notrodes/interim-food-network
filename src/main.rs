@@ -5,10 +5,7 @@ extern crate rocket;
 extern crate rocket_contrib;
 
 use rocket::{http::Status, request::Form};
-use rocket_contrib::databases::rusqlite;
-use rocket_contrib::serve::StaticFiles;
-use rocket_contrib::templates::handlebars;
-use rocket_contrib::templates::Template;
+use rocket_contrib::{ databases::rusqlite, serve::StaticFiles, templates::Template};
 use serde::Serialize;
 use std::error::Error;
 
@@ -19,7 +16,6 @@ fn teapot() -> Status {
     Status::ImATeapot
 }
 
-// TODO: pool with r2d2
 #[get("/search?<zip>")]
 fn search(conn: MyDatabase, zip: u32) -> Result<Template, Box<dyn Error>> {
     // let channel = SearchChannel::start("localhost:1491", "password")?;
@@ -33,10 +29,6 @@ fn search(conn: MyDatabase, zip: u32) -> Result<Template, Box<dyn Error>> {
             name: name.unwrap(),
         })
         .collect();
-    // let mut listings = Vec::new();
-    // for row in results {
-    //     listings.push(Listing {zip, name: row?});
-    // }
     let serialized = json!({ "listings": &results, "zip": zip });
     Ok(Template::render("results", serialized))
 }
@@ -49,20 +41,11 @@ struct Listing {
 
 #[post("/create.html", data = "<listing>")]
 fn create(conn: MyDatabase, listing: Form<Listing>) -> rusqlite::Result<Status> {
-    // conn.get_one();
     // If there is a table with the zip code
-    // panic!();
-    // println!("{:?}", conn
-    // .prepare("SELECT * FROM zip_codes WHERE code = (?1)")?
-    // .exists(&[&listing.zip]) );
-    println!("{:?}", listing);
-
-    // panic!("1");
     conn.execute(
         "INSERT INTO listings (zip, name) VALUES (?1, ?2)",
         &[&listing.zip, &listing.name],
     )?;
-    // println!("{:?}", );
     Ok(Status::Ok)
 }
 
