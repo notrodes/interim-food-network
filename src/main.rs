@@ -3,13 +3,15 @@
 extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
+
 use rocket::{http::Status, request::Form, response::NamedFile};
-use rocket_contrib::databases::diesel;
+use rocket_contrib::databases::rusqlite;
 use rocket_contrib::serve::StaticFiles;
+// use diesel::prelude::*;
 use std::error::Error;
 
-// use rocket_contrib::databases::{r2d2, DbError, DatabaseConfig, Poolable};
 use sonic_channel::*;
+
 
 #[get("/teapot")]
 fn teapot() -> Status {
@@ -27,18 +29,19 @@ fn search(zip: u64) -> Result<NamedFile, Box<dyn Error>> {
 }
 
 #[derive(FromForm, Debug)]
-struct Listing {
+struct FormListing {
     test: String,
 }
 
 #[post("/create.html", data = "<listing>")]
-fn create(listing: Form<Listing>) -> Status {
-    println!("{:?}", listing);
+fn create(conn: MyDatabase, listing: Form<FormListing>) -> Status {
+    // conn.get_one();
+    // Listings::belonging_to(0).load::<Listing>(conn);
     Status::Ok
 }
 
 #[database("my_db")]
-struct MyDatabase(diesel::SqliteConnection);
+struct MyDatabase(rusqlite::Connection);
 
 fn main() {
     rocket::ignite()
