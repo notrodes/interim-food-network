@@ -8,6 +8,6 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.4.7"
-rocket_contrib = { version = "0.4.7", features = ["sqlite_pool"] }
+rocket_contrib = { version = "0.4.7", features = ["sqlite_pool", "handlebars_templates"] }
 sonic-channel = { version = "0.4", features = ["control", "ingest", "search"] }
 # rusqlite = "0.24.2"
