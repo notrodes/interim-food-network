@@ -10,11 +10,16 @@
 <body>
     <a href="/"><h1>Foodbank</h1></a>
     <main>
-        <ul >
-            {{#each results}}
+        <h2>Results for {{zip}}</h2>
+        <ul class="listings">
+            
+            {{#each listings}}
             <li>
-                
+                <p>{{this.name}}</p>
             </li>
+            {{else}}
+            <p>No results found for this query</p>
+            {{/each}}
         </ul>
     </main>
 </body>
